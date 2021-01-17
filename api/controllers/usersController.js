@@ -8,16 +8,15 @@ const bcrypt = require('bcryptjs')
 // Register
 module.exports.register = [
   // validations rules
-  validator.body('full_name', 'Please enter Full Name').isLength({ min: 1 }),
-  validator.body('email', 'Please enter Email').isLength({ min: 1 }),
-  validator.body('email').custom(value => {
-    return User.findOne({email:value}).then(user => {
+  validator.body('login', 'Введите логин').isLength({ min: 1 }),
+  validator.body('login').custom(value => {
+    return User.findOne({login:value}).then(user => {
       if (user !== null) {
-        return Promise.reject('Email already in use');
+        return Promise.reject('Пользователь с таким логином уже есть');
       }
     })
   }),
-  validator.body('password', 'Please enter Password').isLength({ min: 1 }),
+  validator.body('password', 'Введите пароль').isLength({ min: 1 }),
 
   function(req, res) {
     // throw validation errors
@@ -28,8 +27,8 @@ module.exports.register = [
 
     // initialize record
     var user = new User({
-        full_name : req.body.full_name,
-        email : req.body.email,
+        fio : req.body.fio,
+        login : req.body.login,
         password : req.body.password,
     })
 
@@ -58,8 +57,8 @@ module.exports.register = [
 // Login
 module.exports.login = [
   // validation rules
-  validator.body('email', 'Please enter Email').isLength({ min: 1 }),
-  validator.body('password', 'Please enter Password').isLength({ min: 1 }),
+  validator.body('login', 'Введите логин').isLength({ min: 1 }),
+  validator.body('password', 'Введите пароль').isLength({ min: 1 }),
 
   function(req, res) {
     // throw validation errors
@@ -69,7 +68,7 @@ module.exports.login = [
     }
 
     // validate email and password are correct
-    User.findOne({email: req.body.email}, function(err, user){
+    User.findOne({login: req.body.login}, function(err, user){
         if(err) {
             return res.status(500).json({
                 message: 'Error logging in',
@@ -79,7 +78,7 @@ module.exports.login = [
 
         if (user === null) {
           return res.status(500).json({
-            message: 'Email address you entered is not found.'
+            message: 'Пользователь не найден.'
           });
         }
 
@@ -89,15 +88,15 @@ module.exports.login = [
             return res.json({
               user: {
                 _id: user._id,
-                email: user.email,
-                full_name: user.full_name
+                login: user.login,
+                fio: user.fio
               },
-              token: jwt.sign({_id: user._id, email: user.email, full_name: user.full_name}, config.authSecret) // generate JWT token here
+              token: jwt.sign({_id: user._id, login: user.login, fio: user.fio}, config.authSecret) // generate JWT token here
             });
           }
           else{
             return res.status(500).json({
-              message: 'Invalid Email or Password entered.'
+              message: 'Неверный пароль'
             });
           }
         });

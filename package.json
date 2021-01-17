@@ -1,8 +1,8 @@
 {
-  "name": "nuxt-with-express",
+  "name": "swms",
   "version": "1.0.0",
-  "description": "My primo Nuxt.js project",
-  "author": "Aslam Doctor",
+  "description": "swms",
+  "author": "k.gromov",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",

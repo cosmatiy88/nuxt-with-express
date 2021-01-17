@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Logging out</h1>
+    <h1>Выход</h1>
     <hr>
 
-    <p>Please wait...</p>
+    <p>...</p>
   </div>
 </template>
 

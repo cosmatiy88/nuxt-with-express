@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const config = {
-  authSecret:'mysecret',
+  authSecret:'DoYouHaveAFunCard',
 }
 
 module.exports = config
